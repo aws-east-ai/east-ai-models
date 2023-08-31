@@ -1,0 +1,9 @@
+git+https://github.com/IDEA-Research/Grounded-Segment-Anything#subdirectory=GroundingDINO
+git+https://github.com/IDEA-Research/Grounded-Segment-Anything#subdirectory=segment_anything
+sagemaker
+boto3
+diffusers
+transformers
+accelerate
+scipy
+safetensors
