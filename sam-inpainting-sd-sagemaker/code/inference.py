@@ -160,15 +160,15 @@ def predict_fn(input_data, model):
     ## save the mask
     up_img = Image.fromarray(np.invert(masks)[0])
     byteImgIO = io.BytesIO()
-    up_img.save(byteImgIO, "PNG")
+    up_img.save(byteImgIO, "WEBP")
     byteImgIO.seek(0)
     byteImg = byteImgIO.read()
     s3_resource = boto3.resource('s3')
     dir_lst = input_data['output_mask_image_dir'].split('/')
     img_id = uuid.uuid4().hex
     s3_bucket = dir_lst[2]
-    s3_object_key = '/'.join(dir_lst[3:]) + img_id + '.png'
-    s3_resource.Bucket(s3_bucket).put_object(Key=s3_object_key, Body=byteImg, ContentType='image/png')
+    s3_object_key = '/'.join(dir_lst[3:]) + img_id + '.webp'
+    s3_resource.Bucket(s3_bucket).put_object(Key=s3_object_key, Body=byteImg, ContentType='image/webp')
     mask_image_output = 's3://{}/{}'.format(s3_bucket, s3_object_key)
     print("=================segment done=================")
     return mask_image_output
