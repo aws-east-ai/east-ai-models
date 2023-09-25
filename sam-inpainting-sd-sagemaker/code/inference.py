@@ -27,6 +27,7 @@ from segment_anything import sam_model_registry, SamPredictor
 import json
 import boto3
 import uuid
+import wget
 
 
 def load_model_hf(repo_id, filename, ckpt_config_filename, device='cpu'):
@@ -96,7 +97,10 @@ def model_fn(model_dir):
     model = load_model_hf(ckpt_repo_id, ckpt_filenmae, ckpt_config_filename)
     
     ## Loading sam model
-    sam_checkpoint = "/opt/ml/model/sam_vit_h_4b8939.pth"
+    sam_url = "https://dl.fbaipublicfiles.com/segment_anything/sam_vit_h_4b8939.pth"
+    # sam_checkpoint = "/opt/ml/model/sam_vit_h_4b8939.pth"
+    sam_checkpoint = "/tmp/sam_vit_h_4b8939.pth"
+    wget.download(sam_url, sam_checkpoint)
     model_type = "vit_h"
     device = "cuda"
     sam = sam_model_registry[model_type](checkpoint=sam_checkpoint)

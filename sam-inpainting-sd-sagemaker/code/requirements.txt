@@ -7,3 +7,4 @@ transformers
 accelerate
 scipy
 safetensors
+wget
