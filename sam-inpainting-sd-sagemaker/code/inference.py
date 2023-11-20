@@ -21,7 +21,6 @@ from groundingdino.util.utils import clean_state_dict
 from groundingdino.util.inference import annotate, predict
 import groundingdino.datasets.transforms as T
 from huggingface_hub import hf_hub_download
-import torch
 import sys
 from segment_anything import sam_model_registry, SamPredictor
 import json
@@ -138,7 +137,8 @@ def predict_fn(input_data, model):
             image=image_transformed, 
             caption=TEXT_PROMPT, 
             box_threshold=BOX_TRESHOLD, 
-            text_threshold=TEXT_TRESHOLD
+            text_threshold=TEXT_TRESHOLD,
+            device='cpu'
         )
 
         annotated_frame = annotate(image_source=image, boxes=boxes, logits=logits, phrases=phrases)
@@ -147,8 +147,9 @@ def predict_fn(input_data, model):
         ## Get the detection boxes
         ## For simplicity, here we are only using the first box, where ideally you can iter through all the boxes detected
         dino_box = box_list[0]
-    except IndexError:
-        print("No object found" + '.'*20)
+    except Exception as e:
+        # print("No object found" + '.'*20)
+        print(e)
     
     print("=================Dino detect done, segment start=================")
     mask_path = input_data['output_mask_image_dir']
